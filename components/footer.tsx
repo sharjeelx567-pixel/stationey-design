@@ -1,9 +1,38 @@
+"use client"
+
 import Link from "next/link"
-import { Facebook, Twitter, Instagram } from "lucide-react"
+import { Facebook, Instagram } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 export function Footer() {
+  const [email, setEmail] = useState("")
+  const [subscribeLoading, setSubscribeLoading] = useState(false)
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setSubscribeLoading(true)
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+      if (response.ok) {
+        setEmail("")
+        alert("Thank you for subscribing!")
+      }
+    } catch (error) {
+      console.error("Subscription error:", error)
+      alert("Failed to subscribe. Please try again.")
+    } finally {
+      setSubscribeLoading(false)
+    }
+  }
+
   return (
     <footer className="bg-secondary border-t">
       <div className="container mx-auto px-4 py-8 sm:py-12">
@@ -11,8 +40,8 @@ export function Footer() {
           {/* Company Info */}
           <div className="xs:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg font-bold text-sm" style={{ backgroundColor: '#ADD8E6', color: '#000000' }}>
-                LBS
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg font-bold text-xs sm:text-sm" style={{ backgroundColor: '#ADD8E6', color: '#000000' }}>
+                LEX
               </div>
               <div className="flex flex-col">
                 <span className="font-bold text-base sm:text-lg" style={{ color: '#000000' }}>LEXON</span>
@@ -24,25 +53,22 @@ export function Footer() {
             </p>
             <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
               <p><strong>Phone:</strong> <a href="tel:03424832105" className="hover:text-foreground">03424832105</a></p>
-              <p><strong>Email:</strong> <a href="mailto:shahidx345@gmail.com" className="hover:text-foreground">shahidx345@gmail.com</a></p>
+              <p><strong>Email:</strong> <a href="mailto:lyallpurexclusiveon@gmail.com" className="hover:text-foreground">lyallpurexclusiveon@gmail.com</a></p>
             </div>
             <div className="flex gap-3">
               <Link
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/1DGZSE1BQr/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="h-9 w-9 rounded-full bg-background border flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
               >
                 <Facebook className="h-4 w-4" />
                 <span className="sr-only">Facebook</span>
               </Link>
               <Link
-                href="https://twitter.com"
-                className="h-9 w-9 rounded-full bg-background border flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-              >
-                <Twitter className="h-4 w-4" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link
-                href="https://instagram.com"
+                href="https://www.instagram.com/lexon.pk?igsh=dXB5cGZwb2p6b2t2&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="h-9 w-9 rounded-full bg-background border flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
               >
                 <Instagram className="h-4 w-4" />
@@ -121,10 +147,17 @@ export function Footer() {
             <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
               Subscribe to get special offers and updates
             </p>
-            <form className="space-y-2">
-              <Input type="email" placeholder="Enter your email" className="w-full text-sm" />
-              <Button type="submit" className="w-full h-9 sm:h-10 text-sm">
-                Subscribe
+            <form className="space-y-2" onSubmit={handleSubscribe}>
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full text-sm"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" className="w-full h-9 sm:h-10 text-sm" disabled={subscribeLoading}>
+                {subscribeLoading ? "Subscribing..." : "Subscribe"}
               </Button>
             </form>
           </div>

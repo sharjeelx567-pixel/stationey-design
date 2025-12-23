@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useCartStore } from "@/lib/cart-store"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,6 +19,7 @@ export function CheckoutForm() {
   const { items, getTotal, clearCart } = useCartStore()
   const { toast } = useToast()
   const [isProcessing, setIsProcessing] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const paymentMethod = "cod" // Always COD
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,6 +32,18 @@ export function CheckoutForm() {
     zip: "",
     country: "Pakistan",
   })
+
+  useEffect(() => {
+    setIsMounted(true)
+    // Check if cart is empty on mount
+    if (items.length === 0) {
+      router.push("/cart")
+    }
+  }, [items, router])
+
+  if (!isMounted || items.length === 0) {
+    return null
+  }
 
   const subtotal = getTotal()
   const shipping = subtotal >= 3000 ? 0 : 100
@@ -116,10 +129,31 @@ export function CheckoutForm() {
       const orderData = await orderResponse.json()
       const orderId = orderData.order.id
 
-      // For COD, just create the order without payment processing
+      // Now process payment/send confirmation
+      const paymentPayload = {
+        userId: orderPayload.userId,
+        orderId,
+        amount: total,
+        method: "cod",
+        userEmail: formData.email,
+      }
+
+      const paymentResponse = await fetch("/api/payments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paymentPayload),
+      })
+
+      if (!paymentResponse.ok) {
+        throw new Error("Failed to process payment")
+      }
+
+      // For COD, payment is pending until delivery
       toast({
         title: "Order Confirmed!",
-        description: "Your order has been placed. You will pay upon delivery.",
+        description: "Your order has been placed. You will pay upon delivery. Check your email for details.",
       })
 
       // Clear cart and redirect to success page

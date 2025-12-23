@@ -21,7 +21,7 @@ export default function HomePage() {
                   Discover Quality <span className="text-primary">Apparel, Souvenirs & Stationery</span>
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  From premium hoodies and official LBS merchandise to elegant diaries and professional writing
+                  From premium hoodies and official LBS souvenirs to elegant diaries and professional writing
                   instruments. Shop the complete Lexon collection.
                 </p>
                 <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
@@ -38,7 +38,7 @@ export default function HomePage() {
               </div>
               <div className="relative h-[300px] sm:h-[350px] md:h-[400px] lg:h-[500px] order-first lg:order-last">
                 <Image
-                  src="/notebook-collection.jpeg"
+                  src="/notebook-stack.jpg"
                   alt="Premium products workspace"
                   fill
                   className="object-contain"
@@ -182,45 +182,61 @@ export default function HomePage() {
 const featuredProducts = [
   {
     id: "1",
-    name: "Calvin Premium Hoodie",
+    name: "Calvin Premium Hoodie - Gray",
     category: "Apparel",
     price: 2500,
-    image: "/hoodie-calvin.jpeg",
+    image: "/hoodie-calvin-gray.jpg",
   },
   {
     id: "2",
-    name: "Burberry Premium Sweater",
+    name: "BTUR BTNY Premium Striped Sweater",
     category: "Apparel",
-    price: 3800,
-    image: "/sweater-burberry.jpeg",
+    price: 3200,
+    image: "/sweater-striped.jpg",
   },
   {
     id: "3",
-    name: "Premium Notebook Collection",
+    name: "Premium Leather Notebook Collection",
     category: "Stationery Items",
     price: 1400,
-    image: "/notebook-collection.jpeg",
+    image: "/notebook-stack.jpg",
   },
   {
     id: "4",
-    name: "Classic Black Keychain",
+    name: "Premium Islamic Calligraphy Keychain",
     category: "Stationery Items",
-    price: 280,
-    image: "/keychain-black.jpeg",
+    price: 350,
+    image: "/keychain-islamic.jpg",
+  },
+  {
+    id: "5",
+    name: "Executive Leather Planner with Pen Set",
+    category: "Stationery Items",
+    price: 2800,
+    image: "/planner-orange.jpg",
   },
 ]
+
 
 const categories = [
   {
     name: "Apparel",
     slug: "apparel",
     description: "Premium hoodies and designer sweaters",
-    image: "/hoodie-calvin.jpeg",
+    image: "/hoodie-calvin-gray.jpg",
   },
   {
     name: "Stationery Items",
     slug: "stationery-items",
-    description: "Quality notebooks, diaries, and keychains",
-    image: "/notebook-collection.jpeg",
+    description: "Quality notebooks, planners, and water bottles",
+    image: "/notebook-stack.jpg",
+  },
+  {
+    name: "Souvenirs",
+    slug: "souvenirs",
+    description: "Official LBS branded pens and keychains",
+    image: "/keychain-lbs-rectangular.jpg",
   },
 ]
+
+

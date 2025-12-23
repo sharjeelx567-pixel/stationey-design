@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     // Create review
     const userIdForReview = userId || `guest_${Date.now()}`
-    const review = createReview(productId, userIdForReview, rating, comment)
+    const review = await createReview(productId, userIdForReview, rating, comment)
 
     return NextResponse.json(
       {
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Product ID is required" }, { status: 400 })
     }
 
-    const reviews = getReviewsByProductId(productId)
+    const reviews = await getReviewsByProductId(productId)
 
     return NextResponse.json(
       {

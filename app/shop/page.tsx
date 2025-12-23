@@ -5,32 +5,33 @@ import { ProductFilters } from "@/components/product-filters"
 import { products } from "@/lib/products"
 import { Suspense } from "react"
 
-function ShopContent({
+async function ShopContent({
   searchParams,
 }: {
-  searchParams: { category?: string; sort?: string; search?: string }
+  searchParams: Promise<{ category?: string; sort?: string; search?: string }>
 }) {
+  const params = await searchParams
   let filteredProducts = [...products]
 
   // Filter by category
-  if (searchParams.category) {
-    filteredProducts = filteredProducts.filter((p) => p.categorySlug === searchParams.category)
+  if (params.category) {
+    filteredProducts = filteredProducts.filter((p) => p.categorySlug === params.category)
   }
 
   // Filter by search
-  if (searchParams.search) {
-    const search = searchParams.search.toLowerCase()
+  if (params.search) {
+    const search = params.search.toLowerCase()
     filteredProducts = filteredProducts.filter(
       (p) => p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search),
     )
   }
 
   // Sort products
-  if (searchParams.sort === "price-low") {
+  if (params.sort === "price-low") {
     filteredProducts.sort((a, b) => a.price - b.price)
-  } else if (searchParams.sort === "price-high") {
+  } else if (params.sort === "price-high") {
     filteredProducts.sort((a, b) => b.price - a.price)
-  } else if (searchParams.sort === "rating") {
+  } else if (params.sort === "rating") {
     filteredProducts.sort((a, b) => b.rating - a.rating)
   }
 
@@ -71,7 +72,7 @@ function ShopContent({
 export default function ShopPage({
   searchParams,
 }: {
-  searchParams: { category?: string; sort?: string; search?: string }
+  searchParams: Promise<{ category?: string; sort?: string; search?: string }>
 }) {
   return (
     <div className="flex min-h-screen flex-col">

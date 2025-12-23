@@ -105,7 +105,7 @@ function CheckoutSuccessContent() {
               </div>
               {emailSent && (
                 <p className="text-sm text-green-700 bg-green-50 p-2 rounded border border-green-200">
-                  ✓ Confirmation email sent to shahidx345@gmail.com
+                  ✓ Confirmation email sent to lyallpurexclusiveon@gmail.com
                 </p>
               )}
               <p className="text-xs text-muted-foreground">
@@ -299,3 +299,7 @@ function LoadingPage() {
     </div>
   )
 }
+
+
+
+

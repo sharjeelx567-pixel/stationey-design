@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createPayment, getPaymentsByOrderId, getOrderById, updateOrder, updatePayment } from "@/lib/db"
+import { sendOrderConfirmationEmail } from "@/lib/email-service"
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { userId, orderId, amount, method, transactionId } = body
+    const { userId, orderId, amount, method, transactionId, userEmail } = body
 
     // Validation
     if (!orderId || !amount || !method) {
@@ -17,27 +18,37 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if order exists
-    const order = getOrderById(orderId)
+    const order = await getOrderById(orderId)
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
 
     // Create payment with COD status
     const userIdForPayment = userId || order.userId
-    const payment = createPayment(orderId, userIdForPayment, amount, method, transactionId)
+    const payment = await createPayment(orderId, userIdForPayment, amount, method, transactionId)
 
     // For COD, payment is pending until delivery
     const paymentStatus = "pending"
     const orderStatus = "pending"
 
     // Update payment status
-    updatePayment(payment.id, { status: paymentStatus })
+    await updatePayment(payment.id, { status: paymentStatus })
 
     // Update order payment and status
-    updateOrder(orderId, {
+    await updateOrder(orderId, {
       paymentStatus,
       status: orderStatus,
     })
+
+    // Send order confirmation emails
+    if (userEmail) {
+      try {
+        await sendOrderConfirmationEmail(userEmail, order)
+      } catch (emailError) {
+        console.error("Email sending error:", emailError)
+        // Don't fail the order if email fails
+      }
+    }
 
     return NextResponse.json(
       {
@@ -69,7 +80,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Order ID is required" }, { status: 400 })
     }
 
-    const payments = getPaymentsByOrderId(orderId)
+    const payments = await getPaymentsByOrderId(orderId)
 
     return NextResponse.json({ payments }, { status: 200 })
   } catch (error) {

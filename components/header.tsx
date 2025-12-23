@@ -27,7 +27,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-lg flex items-center justify-center shadow-md" style={{ backgroundColor: '#ADD8E6' }}>
-              <span className="font-black text-sm" style={{ color: '#000000' }}>LBS</span>
+              <span className="font-black text-xs sm:text-sm" style={{ color: '#000000' }}>LEX</span>
             </div>
             <div className="hidden sm:flex flex-col">
               <span className="font-bold text-lg" style={{ color: '#000000' }}>LEXON</span>
@@ -56,10 +56,25 @@ export function Header() {
 
           {/* Search bar - hidden on mobile */}
           <div className="hidden lg:flex flex-1 max-w-sm">
-            <div className="relative w-full">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                const formData = new FormData(e.currentTarget)
+                const search = formData.get('search') as string
+                if (search.trim()) {
+                  window.location.href = `/shop?search=${encodeURIComponent(search.trim())}`
+                }
+              }}
+              className="relative w-full"
+            >
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input type="search" placeholder="Search products..." className="pl-10 w-full" />
-            </div>
+              <Input
+                type="search"
+                name="search"
+                placeholder="Search products..."
+                className="pl-10 w-full"
+              />
+            </form>
           </div>
 
           {/* Actions */}
@@ -116,10 +131,25 @@ export function Header() {
               <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
                 Contact
               </Link>
-              <div className="relative pt-2">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  const formData = new FormData(e.currentTarget)
+                  const search = formData.get('search') as string
+                  if (search.trim()) {
+                    window.location.href = `/shop?search=${encodeURIComponent(search.trim())}`
+                  }
+                }}
+                className="relative pt-2"
+              >
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input type="search" placeholder="Search products..." className="pl-10 w-full" />
-              </div>
+                <Input
+                  type="search"
+                  name="search"
+                  placeholder="Search products..."
+                  className="pl-10 w-full"
+                />
+              </form>
             </div>
           </nav>
         )}

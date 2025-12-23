@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     // Create order
     const userIdForOrder = userId || `guest_${Date.now()}`
-    const order = createOrder(userIdForOrder, items, total, shippingAddress, paymentMethod)
+    const order = await createOrder(userIdForOrder, items, total, shippingAddress, paymentMethod)
 
     return NextResponse.json(
       {
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user orders
-    const orders = getOrdersByUserId(userId)
+    const orders = await getOrdersByUserId(userId)
 
     return NextResponse.json(
       {

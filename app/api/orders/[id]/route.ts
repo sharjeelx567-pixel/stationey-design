@@ -52,7 +52,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const body = await request.json()
     const { status, paymentStatus } = body
 
-    const order = getOrderById(params.id)
+    const order = await getOrderById(params.id)
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
@@ -66,7 +66,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     if (status) updates.status = status
     if (paymentStatus) updates.paymentStatus = paymentStatus
 
-    const updatedOrder = updateOrder(params.id, updates)
+    const updatedOrder = await updateOrder(params.id, updates)
 
     return NextResponse.json(
       {

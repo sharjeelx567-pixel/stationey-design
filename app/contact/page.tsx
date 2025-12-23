@@ -34,7 +34,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
-                      <p className="text-sm text-muted-foreground"><a href="mailto:shahidx345@gmail.com" className="hover:underline">shahidx345@gmail.com</a></p>
+                      <p className="text-sm text-muted-foreground"><a href="mailto:lyallpurexclusiveon@gmail.com" className="hover:underline">lyallpurexclusiveon@gmail.com</a></p>
                     </div>
                   </div>
                 </CardContent>
@@ -63,9 +63,9 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Address</h3>
-                      <p className="text-sm text-muted-foreground">123 Stationery Street</p>
-                      <p className="text-sm text-muted-foreground">New York, NY 10001</p>
-                      <p className="text-sm text-muted-foreground">United States</p>
+                      <p className="text-sm text-muted-foreground">LEXON</p>
+                      <p className="text-sm text-muted-foreground">BBA DEPARTMENT</p>
+                      <p className="text-sm text-muted-foreground">GCUF</p>
                     </div>
                   </div>
                 </CardContent>

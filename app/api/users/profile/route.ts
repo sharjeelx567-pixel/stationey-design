@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 })
     }
 
-    const user = getUserById(payload.userId)
+    const user = await getUserById(payload.userId)
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
@@ -54,7 +54,7 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json()
     const { name, phone, address, city, zipCode } = body
 
-    const user = updateUser(payload.userId, {
+    const user = await updateUser(payload.userId, {
       ...(name && { name }),
       ...(phone && { phone }),
       ...(address && { address }),
