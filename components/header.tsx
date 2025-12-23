@@ -30,7 +30,7 @@ export function Header() {
               <span className="font-black text-sm" style={{ color: '#000000' }}>LBS</span>
             </div>
             <div className="hidden sm:flex flex-col">
-              <span className="font-bold text-lg" style={{ color: '#ADD8E6' }}>LEXON</span>
+              <span className="font-bold text-lg" style={{ color: '#000000' }}>LEXON</span>
               <span className="text-[10px] tracking-wider text-muted-foreground">WHERE IDEAS BEGIN</span>
             </div>
           </Link>

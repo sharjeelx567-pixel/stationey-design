@@ -5,6 +5,14 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { CheckCircle, Clock, Truck, DollarSign } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -16,6 +24,8 @@ function CheckoutSuccessContent() {
   const orderId = searchParams.get("orderId")
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(true)
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
 
   useEffect(() => {
     if (orderId) {
@@ -33,7 +43,12 @@ function CheckoutSuccessContent() {
       if (response.ok) {
         const data = await response.json()
         const found = data.orders.find((o: Order) => o.id === orderId)
-        setOrder(found || null)
+        if (found) {
+          setOrder(found)
+          setShowConfirmation(true)
+          // Send confirmation email
+          await sendConfirmationEmail(found)
+        }
       }
     } catch (error) {
       console.error("Error fetching order:", error)
@@ -42,9 +57,67 @@ function CheckoutSuccessContent() {
     }
   }
 
+  const sendConfirmationEmail = async (orderData: Order) => {
+    try {
+      const userEmail = localStorage.getItem("userEmail") || "customer@example.com"
+      const response = await fetch("/api/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          order: orderData,
+          userEmail,
+        }),
+      })
+
+      if (response.ok) {
+        setEmailSent(true)
+      }
+    } catch (error) {
+      console.error("Error sending email:", error)
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
+
+      {/* Confirmation Dialog */}
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <CheckCircle className="h-6 w-6 text-green-600" />
+              Order Confirmation
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3">
+              <p className="text-foreground font-medium">
+                Your order has been successfully placed!
+              </p>
+              <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                <p className="text-xs text-muted-foreground">Order ID:</p>
+                <p className="text-lg font-bold text-blue-600">{order?.id}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground">Order Amount: Rs. {order?.total.toLocaleString()}</p>
+                <p className="text-sm font-medium text-foreground">Payment Method: Cash on Delivery (COD)</p>
+              </div>
+              {emailSent && (
+                <p className="text-sm text-green-700 bg-green-50 p-2 rounded border border-green-200">
+                  ✓ Confirmation email sent to shahidx345@gmail.com
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                <strong>Business Address:</strong> LBS GCUF
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogAction onClick={() => setShowConfirmation(false)}>
+            Continue
+          </AlertDialogAction>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <main className="flex-1 bg-muted/40">
         <div className="container mx-auto px-4 py-8 sm:py-16">
