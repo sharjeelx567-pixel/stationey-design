@@ -11,8 +11,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    if (!["card", "bank", "cod"].includes(method)) {
-      return NextResponse.json({ error: "Invalid payment method" }, { status: 400 })
+    // Only COD is supported
+    if (method !== "cod") {
+      return NextResponse.json({ error: "Only Cash on Delivery payment method is supported" }, { status: 400 })
     }
 
     // Check if order exists
@@ -21,28 +22,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
 
-    // Create payment
+    // Create payment with COD status
     const userIdForPayment = userId || order.userId
     const payment = createPayment(orderId, userIdForPayment, amount, method, transactionId)
 
-    // Simulate payment processing
-    let paymentStatus: "completed" | "failed" = "completed"
-    if (method === "card" && Math.random() > 0.95) {
-      // 5% chance of payment failure
-      paymentStatus = "failed"
-    }
+    // For COD, payment is pending until delivery
+    const paymentStatus = "pending"
+    const orderStatus = "pending"
 
     // Update payment status
     updatePayment(payment.id, { status: paymentStatus })
 
-    // Update order payment status
-    if (paymentStatus === "completed") {
-      updateOrder(orderId, { paymentStatus: "completed", status: "processing" })
-    }
+    // Update order payment and status
+    updateOrder(orderId, {
+      paymentStatus,
+      status: orderStatus,
+    })
 
     return NextResponse.json(
       {
-        message: "Payment processed",
+        message: "Order placed. Payment will be collected on delivery.",
         payment: {
           id: payment.id,
           orderId,
@@ -51,7 +50,7 @@ export async function POST(request: NextRequest) {
           status: paymentStatus,
           transactionId,
         },
-        orderStatus: paymentStatus === "completed" ? "processing" : "pending",
+        orderStatus,
       },
       { status: 201 },
     )

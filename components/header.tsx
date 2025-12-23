@@ -26,11 +26,11 @@ export function Header() {
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="relative h-10 w-10 sm:h-12 sm:w-12 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
-              <span className="font-black text-white text-sm">LBS</span>
+            <div className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-lg flex items-center justify-center shadow-md" style={{ backgroundColor: '#ADD8E6' }}>
+              <span className="font-black text-sm" style={{ color: '#000000' }}>LBS</span>
             </div>
             <div className="hidden sm:flex flex-col">
-              <span className="font-bold text-lg text-blue-600">LEXON</span>
+              <span className="font-bold text-lg" style={{ color: '#ADD8E6' }}>LEXON</span>
               <span className="text-[10px] tracking-wider text-muted-foreground">WHERE IDEAS BEGIN</span>
             </div>
           </Link>

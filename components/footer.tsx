@@ -11,17 +11,21 @@ export function Footer() {
           {/* Company Info */}
           <div className="xs:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white font-bold text-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg font-bold text-sm" style={{ backgroundColor: '#ADD8E6', color: '#000000' }}>
                 LBS
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-base sm:text-lg text-blue-600">LEXON</span>
+                <span className="font-bold text-base sm:text-lg" style={{ color: '#ADD8E6' }}>LEXON</span>
                 <span className="text-[10px] tracking-wider text-muted-foreground">WHERE IDEAS BEGIN</span>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3 sm:mb-4">
               Quality stationery products for students, professionals, and creative minds worldwide.
             </p>
+            <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
+              <p><strong>Phone:</strong> <a href="tel:03424832105" className="hover:text-foreground">03424832105</a></p>
+              <p><strong>Email:</strong> <a href="mailto:shahidx345@gmail.com" className="hover:text-foreground">shahidx345@gmail.com</a></p>
+            </div>
             <div className="flex gap-3">
               <Link
                 href="https://facebook.com"

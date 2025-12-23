@@ -8,7 +8,7 @@ export function AdminHeader() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link href="/admin" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-xl">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg font-bold text-xl" style={{ backgroundColor: '#ADD8E6', color: '#000000' }}>
               L
             </div>
             <div>

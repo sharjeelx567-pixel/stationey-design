@@ -65,8 +65,8 @@ export default function FAQPage() {
               <AccordionItem value="item-6" className="border rounded-lg px-6">
                 <AccordionTrigger className="text-left">Do you offer bulk discounts?</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">
-                  Yes! We offer special pricing for bulk orders. Please contact our sales team at
-                  sales@lexonstationery.com with details about your order, and we'll provide you with a custom quote.
+                  Yes! We offer special pricing for bulk orders. Please contact us at
+                  <a href="mailto:shahidx345@gmail.com" className="hover:underline"> shahidx345@gmail.com</a> or call <a href="tel:03424832105" className="hover:underline">03424832105</a> with details about your order.
                 </AccordionContent>
               </AccordionItem>
 

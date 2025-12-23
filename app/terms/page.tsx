@@ -82,7 +82,8 @@ export default function TermsPage() {
               <h2 className="text-2xl font-bold mb-4">8. Contact Information</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 If you have any questions about these Terms and Conditions, please contact us at
-                legal@lexonstationery.com or call us at +1 (555) 123-4567.
+                If you have any questions about these Terms of Service, please contact us at
+                <a href="mailto:shahidx345@gmail.com" className="hover:underline"> shahidx345@gmail.com</a> or call <a href="tel:03424832105" className="hover:underline">03424832105</a>.
               </p>
             </section>
           </div>

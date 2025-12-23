@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createOrder, getOrdersByUserId } from "@/lib/db"
+import { createOrder, getOrdersByUserId, getAllOrders } from "@/lib/db"
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,7 +36,10 @@ export async function POST(request: NextRequest) {
           total: order.total,
           status: order.status,
           paymentStatus: order.paymentStatus,
+          paymentMethod: order.paymentMethod,
+          shippingAddress: order.shippingAddress,
           createdAt: order.createdAt,
+          updatedAt: order.updatedAt,
         },
       },
       { status: 201 },
@@ -67,6 +70,8 @@ export async function GET(request: NextRequest) {
           total: order.total,
           status: order.status,
           paymentStatus: order.paymentStatus,
+          paymentMethod: order.paymentMethod,
+          shippingAddress: order.shippingAddress,
           createdAt: order.createdAt,
           updatedAt: order.updatedAt,
         })),

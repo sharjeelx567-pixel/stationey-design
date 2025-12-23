@@ -121,6 +121,71 @@ export const products: Product[] = [
       "Premium quality",
     ],
   },
+
+  // SOUVENIR SHOP CATEGORY
+  {
+    id: "6",
+    name: "LBS Official Branded Keychain - Gold",
+    description:
+      "Official Lyallpur Business School branded keychain in premium gold finish. Featuring the LBS logo with elegant design. Perfect gift and collectible item for students, alumni, and supporters.",
+    price: 450,
+    category: "Souvenir Shop",
+    categorySlug: "souvenir-shop",
+    images: ["/lbs-keychain-gold.jpeg"],
+    inStock: true,
+    rating: 4.9,
+    reviewCount: 156,
+    features: [
+      "Official LBS branding",
+      "Gold finish",
+      "Premium metal construction",
+      "Collectible item",
+      "Perfect gift",
+      "Alumni favorite",
+    ],
+  },
+  {
+    id: "7",
+    name: "LBS Commemorative Pin Set",
+    description:
+      "Exclusive set of LBS commemorative pins featuring the official logo and institutional colors. Perfect for events, uniforms, and collectibles. Each pin is meticulously crafted with premium materials.",
+    price: 380,
+    category: "Souvenir Shop",
+    categorySlug: "souvenir-shop",
+    images: ["/lbs-pin-set.jpeg"],
+    inStock: true,
+    rating: 4.8,
+    reviewCount: 98,
+    features: [
+      "Official LBS logos",
+      "Set of 3 pins",
+      "Premium materials",
+      "Institutional colors",
+      "Perfect for events",
+      "Collectible quality",
+    ],
+  },
+  {
+    id: "8",
+    name: "LBS Official Merchandise Pack",
+    description:
+      "Complete LBS merchandise bundle featuring official branded items. Includes branded pen, sticker set, and exclusive merchandise. Perfect gift for new students and alumni.",
+    price: 899,
+    category: "Souvenir Shop",
+    categorySlug: "souvenir-shop",
+    images: ["/lbs-merchandise-pack.jpeg"],
+    inStock: true,
+    rating: 4.9,
+    reviewCount: 234,
+    features: [
+      "Official LBS branding",
+      "Multiple items included",
+      "Premium quality",
+      "Perfect gift set",
+      "Student favorite",
+      "Limited edition",
+    ],
+  },
 ]
 
 export function getProductById(id: string): Product | undefined {

@@ -34,8 +34,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
-                      <p className="text-sm text-muted-foreground">support@lexonstationery.com</p>
-                      <p className="text-sm text-muted-foreground">sales@lexonstationery.com</p>
+                      <p className="text-sm text-muted-foreground"><a href="mailto:shahidx345@gmail.com" className="hover:underline">shahidx345@gmail.com</a></p>
                     </div>
                   </div>
                 </CardContent>
@@ -49,8 +48,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Phone</h3>
-                      <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
-                      <p className="text-sm text-muted-foreground">Mon-Fri: 9am - 6pm EST</p>
+                      <p className="text-sm text-muted-foreground"><a href="tel:03424832105" className="hover:underline">03424832105</a></p>
+                      <p className="text-sm text-muted-foreground">Available for inquiries</p>
                     </div>
                   </div>
                 </CardContent>

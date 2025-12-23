@@ -134,7 +134,7 @@ export default function ShippingPage() {
                 <div className="bg-muted/40 rounded-lg p-6">
                   <p className="text-muted-foreground">
                     If you have any questions about shipping or need assistance with your order, please contact our
-                    customer service team at support@lexonstationery.com or call us at +1 (555) 123-4567.
+                    customer service team at <a href="mailto:shahidx345@gmail.com" className="hover:underline">shahidx345@gmail.com</a> or call <a href="tel:03424832105" className="hover:underline">03424832105</a>.
                   </p>
                 </div>
               </section>

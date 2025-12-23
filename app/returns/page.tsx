@@ -82,7 +82,7 @@ export default function ReturnsPage() {
                 <div className="bg-muted/40 rounded-lg p-6">
                   <ol className="list-decimal list-inside space-y-3 text-muted-foreground">
                     <li>
-                      Contact our customer service team at returns@lexonstationery.com or call +1 (555) 123-4567 to
+                      Contact our customer service team at <a href="mailto:shahidx345@gmail.com" className="hover:underline">shahidx345@gmail.com</a> or call <a href="tel:03424832105" className="hover:underline">03424832105</a> to
                       initiate a return
                     </li>
                     <li>Provide your order number and the reason for return</li>
@@ -131,7 +131,7 @@ export default function ReturnsPage() {
                 <div className="bg-muted/40 rounded-lg p-6">
                   <p className="text-muted-foreground mb-4">
                     If you receive a damaged or defective item, please contact us immediately at
-                    support@lexonstationery.com with photos of the damage. We'll arrange for a replacement or full
+                    <a href="mailto:shahidx345@gmail.com" className="hover:underline"> shahidx345@gmail.com</a> or call <a href="tel:03424832105" className="hover:underline">03424832105</a> with photos of the damage. We'll arrange for a replacement or full
                     refund at no cost to you.
                   </p>
                   <p className="text-muted-foreground">

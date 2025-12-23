@@ -3,8 +3,9 @@ import { Footer } from "@/components/footer"
 import { ProductGrid } from "@/components/product-grid"
 import { ProductFilters } from "@/components/product-filters"
 import { products } from "@/lib/products"
+import { Suspense } from "react"
 
-export default function ShopPage({
+function ShopContent({
   searchParams,
 }: {
   searchParams: { category?: string; sort?: string; search?: string }
@@ -34,9 +35,7 @@ export default function ShopPage({
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-
+    <>
       <main className="flex-1">
         <div className="border-b bg-muted/40">
           <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -65,8 +64,35 @@ export default function ShopPage({
           </div>
         </div>
       </main>
+    </>
+  )
+}
 
+export default function ShopPage({
+  searchParams,
+}: {
+  searchParams: { category?: string; sort?: string; search?: string }
+}) {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <Suspense fallback={<LoadingShop />}>
+        <ShopContent searchParams={searchParams} />
+      </Suspense>
       <Footer />
     </div>
+  )
+}
+
+function LoadingShop() {
+  return (
+    <main className="flex-1">
+      <div className="border-b bg-muted/40">
+        <div className="container mx-auto px-4 py-6 sm:py-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Shop All Products</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Loading products...</p>
+        </div>
+      </div>
+    </main>
   )
 }

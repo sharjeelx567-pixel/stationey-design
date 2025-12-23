@@ -9,29 +9,132 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { CreditCard, Truck, User } from "lucide-react"
+import { Truck, User, DollarSign } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { useToast } from "@/hooks/use-toast"
 
 export function CheckoutForm() {
   const router = useRouter()
   const { items, getTotal, clearCart } = useCartStore()
+  const { toast } = useToast()
   const [isProcessing, setIsProcessing] = useState(false)
+  const paymentMethod = "cod" // Always COD
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "Pakistan",
+  })
 
   const subtotal = getTotal()
   const shipping = subtotal >= 3000 ? 0 : 100
   const total = subtotal + shipping
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }))
+  }
+
+  const validateForm = () => {
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "address",
+      "city",
+      "state",
+      "zip",
+    ]
+
+    for (const field of requiredFields) {
+      if (!formData[field as keyof typeof formData]) {
+        toast({
+          title: "Missing Information",
+          description: "Please fill in all required fields",
+          variant: "destructive",
+        })
+        return false
+      }
+    }
+
+    return true
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!validateForm()) {
+      return
+    }
+
     setIsProcessing(true)
 
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      // Create order
+      const orderPayload = {
+        userId: `user_${Date.now()}`,
+        items: items.map((item) => ({
+          productId: item.product.id,
+          productName: item.product.name,
+          quantity: item.quantity,
+          price: item.product.price,
+          image: item.product.images[0] || "/placeholder.svg",
+        })),
+        total,
+        shippingAddress: {
+          name: `${formData.firstName} ${formData.lastName}`,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          zipCode: formData.zip,
+        },
+        paymentMethod: "cod",
+      }
 
-    // Clear cart and redirect to success page
-    clearCart()
-    router.push("/checkout/success")
+      const orderResponse = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderPayload),
+      })
+
+      if (!orderResponse.ok) {
+        throw new Error("Failed to create order")
+      }
+
+      const orderData = await orderResponse.json()
+      const orderId = orderData.order.id
+
+      // For COD, just create the order without payment processing
+      toast({
+        title: "Order Confirmed!",
+        description: "Your order has been placed. You will pay upon delivery.",
+      })
+
+      // Clear cart and redirect to success page
+      clearCart()
+      router.push(`/checkout/success?orderId=${orderId}`)
+    } catch (error) {
+      console.error("Checkout error:", error)
+      toast({
+        title: "Error",
+        description: "An error occurred while processing your order. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   if (items.length === 0) {
@@ -56,20 +159,42 @@ export function CheckoutForm() {
               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" required />
+                  <Input
+                    id="firstName"
+                    required
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" required />
+                  <Input
+                    id="lastName"
+                    required
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" required />
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" required />
+                <Input
+                  id="phone"
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                />
               </div>
             </CardContent>
           </Card>
@@ -85,57 +210,77 @@ export function CheckoutForm() {
             <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0">
               <div className="space-y-2">
                 <Label htmlFor="address">Street Address</Label>
-                <Input id="address" required />
+                <Input
+                  id="address"
+                  required
+                  value={formData.address}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="city">City</Label>
-                  <Input id="city" required />
+                  <Input
+                    id="city"
+                    required
+                    value={formData.city}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="state">State / Province</Label>
-                  <Input id="state" required />
+                  <Input
+                    id="state"
+                    required
+                    value={formData.state}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="zip">ZIP / Postal Code</Label>
-                  <Input id="zip" required />
+                  <Input
+                    id="zip"
+                    required
+                    value={formData.zip}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="country">Country</Label>
-                  <Input id="country" required />
+                  <Input
+                    id="country"
+                    value={formData.country}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Payment Information */}
-          <Card>
+          {/* Payment Method */}
+          <Card className="border-green-200 bg-green-50/50">
             <CardHeader className="p-4 sm:p-6">
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
-                Payment Information
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg text-green-700">
+                <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />
+                Cash on Delivery
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0">
-              <div className="space-y-2">
-                <Label htmlFor="cardNumber">Card Number</Label>
-                <Input id="cardNumber" placeholder="1234 5678 9012 3456" required />
+              <div className="space-y-2 text-sm text-green-900">
+                <p className="font-medium">How it works:</p>
+                <ul className="list-disc list-inside space-y-1 text-xs">
+                  <li>Your order will be delivered to the address you provided</li>
+                  <li>You can inspect the items before making the payment</li>
+                  <li>Pay the delivery person in cash upon receipt</li>
+                  <li>You will receive a receipt and order confirmation</li>
+                </ul>
               </div>
-              <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="expiry">Expiry Date</Label>
-                  <Input id="expiry" placeholder="MM / YY" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="cvv">CVV</Label>
-                  <Input id="cvv" placeholder="123" required />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="cardName">Cardholder Name</Label>
-                <Input id="cardName" required />
+              <div className="p-3 bg-green-100 border border-green-300 rounded-lg text-sm text-green-900">
+                <p>
+                  <strong>Total to Pay on Delivery:</strong> Rs. {total.toLocaleString()}
+                </p>
               </div>
             </CardContent>
           </Card>
